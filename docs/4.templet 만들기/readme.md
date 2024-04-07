@@ -99,3 +99,119 @@ def home(request): # / 에 접속시 사용할 로직
 야호 ~!~!~!
 
 # 우린 앞으로 무엇을 해야할까 ?
+
+`base.html` 로 뼈대 문서를 만들었고 `/` 경로에 대해 요청에 응답하는 문서를 만들었다.
+
+그럼 우린 이제 `/login , /signup` 경로에 대한 요청에 응답 할 문서를 만들면 된다.
+
+## `signup` 문서 만들기
+
+```html
+{% extends 'base.html' %} {% block content %}
+
+<div class="container">
+  <h1>회원가입</h1>
+  <form method="POST" action="{% url 'signup' %}">
+    ID :
+    <input name="username" type="text" value="" />
+    <br />
+    <br />
+    PW :
+    <input name="password1" type="password" value="" />
+    <br />
+    <br />
+    Confirm :
+    <input name="password2" type="password" value="" />
+    <br />
+    <br />
+    <input class="btn btn-primary" type="submit" value="회원가입" />
+  </form>
+</div>
+{% endblock %}
+```
+
+자 내가 만든 `signup.html` 문서는 뼈대 문서 내부에 존재하는
+
+`{% block content %} {% endblock %}` 내부에서 렌더링 될 것이다.
+
+좀 어려운 말이지만 이렇게 이해하면 된다.
+
+```html
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Document</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'style.css' %}" type="text/css" />
+    {% block style %} {% endblock %}
+  </head>
+  <body>
+    <h1>HOME</h1>
+    {% block content %} {% endblock %} # 이 안에 signup.html 이 들어간다
+  </body>
+</html>
+```
+
+응답으로 보낼 문서를 만들었으니 `views.py` 에 존재하는 `signup` 함수를 변경해주자
+
+```python
+def signup(request): # /signup 에 접속시 사용할 로직
+  return render(request,'signup.html')
+```
+
+이제 앞으로 `/signup` 경로에 접근하여 사용자가 서버측에 `GET` 요청을 보내면
+
+`signup` 함수가 실행되고 서버는 사용자에게 `signup.html` 문서를 응답으로 보낼 것이다.
+
+![alt text](image-2.png)
+
+이렇게 !!!!!!!!!!!!!!!!!!!
+
+## `login` 문서 만들기
+
+얘도 똑같다.
+
+`login.html` 문서를 만들고
+
+`views.py` 내부의 함수 `login` 에서 `login.html` 을 응답으로 보내주면 된다.
+
+```html
+{% extends 'base.html' %} {% block content %}
+<div class="container">
+  <h1>로그인</h1>
+  <form method="POST" action="{% url 'login' %}">
+    {% csrf_token %} ID :
+    <input name="username" type="text" value="" />
+    <br />
+    <br />
+    PW :
+    <input name="password" type="password" value="" />
+    <br />
+    <br />
+    <input class="btn btn-primary" type="submit" value="로그인" />
+  </form>
+
+  {% if error %} {{error}} {% endif %}
+</div>
+
+{% endblock %}
+```
+
+동일하게 `templates` 폴더에서 `login.html` 문서를 만들어주고
+
+```python
+# views.py
+def login(request): # /login 에 접속시 사용할 로직
+  return render(request,'login.html')
+```
+
+`login` 함수에서 해당 문서를 보내주도록 하자
+
+![alt text](image-3.png)
+
+야호
+
+기능은 다음 `docs` 에서 추가해주도록 하자
