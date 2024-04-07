@@ -39,3 +39,5 @@ def home(request): # / 에 접속시 사용할 로직
   return render(request,'base.html')
 
 
+# 기능이 작동하는지 확인해보자 
+
