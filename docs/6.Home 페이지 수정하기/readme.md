@@ -170,3 +170,5 @@ def logout(request):
 ![alt text](image-4.png)
 
 회원 가입 버튼을 누르면 회원가입 페이지로 이동한다.
+
+![alt text](result.gif)
