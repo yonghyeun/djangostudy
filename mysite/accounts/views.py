@@ -27,7 +27,7 @@ def login(request):
             auth.login(request, user)
             return redirect('home')
         else:
-            return render(request,'login.html', {'error':'아이디나 비밀번호가 틀렸어!'})
+            return render(request,'login.html', {'error':'아이디나 비밀번호가 틀렸어! 혹은 서버에 존재하지 않거나 !'})
     else:
         return render(request,'login.html')
 
