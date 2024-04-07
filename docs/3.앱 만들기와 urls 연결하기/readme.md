@@ -128,7 +128,7 @@ INSTALLED_APPS = [
 
 # 회원가입 기능 구현하기
 
-### 페이지의 주소와 로직을 담은 자료구조 생성하기
+### 페이지의 주소와 로직을 담은 자료구조 생성하기 (`accounts`)
 
 ![alt text](image-6.png)
 
@@ -181,3 +181,74 @@ path('login/', # 사용할 주소 , login 주소에 접근하면
  views.login, # views 파일에 존재하는 login 이란 함수를 실행하자
  name="login"), # 이 path 의 이름은 login 이라 하자
 ```
+
+### 페이지의 주소와 로직을 담은 자료구조 생성하기 (`project`)
+
+자 우리는 위에서 우리의 앱에서 사용 할 `urlpatterns` 을 생성해주었다.
+
+이제 프로젝트에서 사용할 `urlpatterns` 를 생성해주자
+
+이번엔 `mysite/urls.py` 에 들어가 다음처럼 작성해주자
+
+```python
+from django.contrib import admin
+from django.urls import path , include
+import accounts.views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('accounts/' , include('account.urls'))
+]
+```
+
+`project` 의 `urlpatterns` 는 무엇을 의미하는가 ?
+
+`path('accounts/' , include('account.urls'))`
+
+내 프로젝트에서 사용할 `url` 경로에 따른 로직을 `accounts` 폴더 내에 존재하는 `urls.py` 파일에 정의된 로직을 사용하겠다는 것이다.
+
+> `url 로직` ?
+> 여태 설명했던 개념을 어떤 단어로 간지나게 포장한 것이다.
+> 웹 페이지는 다음과 같은 기능을 해야 한다.
+>
+> - 어떤 주소에 접속하면 해당 주소에 맞는 페이지를 제공해야 한다.
+> - 페이지들은 페이지에 걸맞는 기능을 해야 한다.
+>   예를 들어 회원가입 페이지에 접속했다면, 회원가입 페이지가 나타나야 하며 회원가입 페이지는 회원가입 기능을 해야 한다.
+
+# `Recap`
+
+어려운 내용들이니 다시 회고하자
+
+우리는 여태까지 무엇을 했는가 ?
+
+1. `accounts` 폴더에 `urls.py` 파일을 생성했다.
+
+해당 파일에선 `/login , /logout , /signup` 주소에 사용자가 접근했을 때
+
+사용 할 로직들을 제공 할 수 있는 `urlpatterns` 를 만들어주었다.
+
+```python
+# accounts.urls.py
+urlpatterns = [
+    path('login/', views.login, name="login"),
+    path('logout/', views.logout, name="logout"),
+    path('signup/', views.signup, name="signup"),
+]
+```
+
+2. `mysite` 폴더에 존재하는 `urls.py` 파일에 `accounts.urls.py` 를 연결시켜주었다.
+
+```python
+from django.contrib import admin
+from django.urls import path , include
+import accounts.views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('accounts/' , include('account.urls'))
+]
+```
+
+이를 통해 우리의 프로젝트는 우리의 앱 (`accounts`) 에서 정의된 `urlpatterns` 를 사용 할 수 있게 되었다.
+
+이로서 우리는 **페이지의 주소 별 사용할 로직을 생성해주었다.**
