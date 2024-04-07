@@ -252,3 +252,120 @@ urlpatterns = [
 이를 통해 우리의 프로젝트는 우리의 앱 (`accounts`) 에서 정의된 `urlpatterns` 를 사용 할 수 있게 되었다.
 
 이로서 우리는 **페이지의 주소 별 사용할 로직을 생성해주었다.**
+
+### 페이지 구동을 위해 `accounts/view.js` 를 만들어주자
+
+우선 자세한 로직은 나중에 사용하기로 하고
+
+```python
+# accounts.urls.py
+urlpatterns = [
+    path('login/', views.login, name="login"),
+    path('logout/', views.logout, name="logout"),
+    path('signup/', views.signup, name="signup"),
+]
+```
+
+에서 사용할 `views.py` 파일과 내부에서 `login  , logout , signup` 함수들을 선언해두자
+
+만들어두지 않으면 서버가 오류를 일으킨다.
+
+> ![alt text](image-7.png)
+
+```python
+# accounts/view.py
+from django.shortcuts import render
+
+# Create your views here.
+
+def login():
+  pass
+
+def logout():
+  pass
+
+def signup():
+  pass
+```
+
+`pass` 는 함수 내부가 구현되지 않더라도 선언될 수 있도록 해두는 일종의 임시 장치이다.
+
+나중에 저 부분을 로직으로 채워줄 것이다.
+
+![alt text](image-8.png)
+
+`view.py` 파일에서 함수들을 선언해주고 나서 서버를 열어보면 다음과 같은 서버의 모습이 보인다.
+
+![alt text](image-9.png)
+
+오류를 살펴보자
+
+```
+Using the URLconf defined in mysite.urls,
+Django tried these URL patterns, in this order:
+
+admin/
+accounts/
+The empty path didn’t match any of these.
+```
+
+너가 설정한 `URLconf` (프로젝트에서 사용하는 `urlpatterns`) 을 이용해서 페이지를 만드려고 했는데
+
+해당 경로 (`/`) 에서 보여주거나 사용할 것이 아무것도 없어
+
+> 비어있는 경로기 때문에 `/` 이다.
+
+라고 이야기 한다.
+
+`/` 에서 사용할 로직도 추가해주자
+
+```python
+# accounts/urls.py
+from django.contrib import admin
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('login/', views.login, name="login"),
+    path('logout/', views.logout, name="logout"),
+    path('signup/', views.signup, name="signup"),
+    path('',views.home , name = 'home') # 빈 경로에 대한 로직 생성
+]
+```
+
+```python
+# mysite/urls.py
+from django.contrib import admin
+from django.urls import path , include
+import accounts.views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('accounts/' , include('accounts.urls')),
+    path('', include('accounts.urls')) # 빈 경로에 대한 로직 생성
+]
+```
+
+그리고 서버를 실행해보자
+
+![alt text](image-10.png)
+
+이번에 다른 오류가 뜬다 .이건 `views.py` 내부의 함수가 비어있기 때문에 발생하는 문제이며
+
+함수의 내부를 채워주면 된다.
+
+# 현재 내 서버는 작동을 하는지 보자
+
+![alt text](image-11.png)
+
+물론 오류가 뜨기하지만 맨 위의 로그를 보자
+
+`GET / HTTP/1.1` !!
+
+이것이 의미하는건 내 서버가 작동중이고
+
+현재 내가 `/` 경로에 접속하는 요청이 서버에 들어왔단 것을 의미한다.
+
+와우
+
+이제 요청이 들어왔을 때 서버에서 건내줄 무엇인가를 만들어주면 된다.
