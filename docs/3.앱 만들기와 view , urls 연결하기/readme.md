@@ -95,7 +95,7 @@ VSCODE 터미널로 가상환경을 실행하는 방법을 배웠다.
 
 우리는 앞으로 이러한 로직을 코드로 구현 할 것이다.
 
-# 전체적인 로직을 먼저 경험해보고 회원가입 페이지를 만들어보자
+# 회원가입 페이지를 만들어보자
 
 ### 프로젝트와 앱을 연동시켜주자
 
@@ -125,3 +125,59 @@ INSTALLED_APPS = [
 이를 통해 이제 우리의 프로젝트에서 우리의 앱인 `accounts` 를 등록시켜주었다.
 
 > 엄밀히 말하면 등록시켰다는 것은 프로젝트에서 `accounts` 에 존재하는 데이터 , 파이썬 파일을 실행 가능하게 한다는 것을 의미한다.
+
+# 회원가입 기능 구현하기
+
+### 페이지의 주소와 로직을 담은 자료구조 생성하기
+
+![alt text](image-6.png)
+
+우선 `accounts` 폴더 내부에 `urls.py` 를 만들어주자
+
+해당 파일이 의미하는 것은 다음과 같다.
+
+**우리의 앱 (accounts) 에서 접근 가능한 경로들을 정의하고 해당 경로에서 사용할 로직들을 모아둔다**
+
+우선 가볍게 이렇게만 생각하자
+
+```python
+from django.contrib import admin # django 에서 제공하는 라이브러리
+from django.urls import path # django 에서 제공하는 라이브러리
+from . import views # 현재 경로에 존재하는 views 파일을 불러온다
+
+urlpatterns = [
+    path('login/', views.login, name="login"),
+    path('logout/', views.logout, name="logout"),
+    path('signup/', views.signup, name="signup"),
+]
+```
+
+다음과 같이 코드를 작성해주자
+
+이것들이 무엇을 의미하는가 ?
+
+위 `from , import` 구문은 `django` 에서 제공하는 라이브러리들과
+
+`views.py` 라는 파일을 불러온 것이다.
+
+> 아직 우리는 `views.py` 파일을 만들지 않았다. 나중에 만들어주도록 하자
+> `from . ` 가 의미하는 것은 현재의 경로인 `.` 에 존재하는 이라 생각하면 편할 것 같다.
+> 만약 폴더명인 `someFolder` 내부에 존재하는 파일을 가져올 것이라면 `from /someFolder` 이렇게 작성해야 할 것이다.
+
+```python
+urlpatterns = [
+    path('login/', views.login, name="login"),
+    path('logout/', views.logout, name="logout"),
+    path('signup/', views.signup, name="signup"),
+]
+```
+
+자 이부분은 어떤 것을 의미하냐면
+
+`urlpatterns` 라는 리스트 `[]` 내부에서 `path(..)` 데이터들을 보관하겠다는 것을 의미한다.
+
+```python
+path('login/', # 사용할 주소 , login 주소에 접근하면
+ views.login, # views 파일에 존재하는 login 이란 함수를 실행하자
+ name="login"), # 이 path 의 이름은 login 이라 하자
+```
