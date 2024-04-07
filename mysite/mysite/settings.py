@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 추가
+    'accounts' # 앱 폴더 (accounts) 와 프로젝트를 연동
 ]
 
 MIDDLEWARE = [
