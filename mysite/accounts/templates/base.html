@@ -7,10 +7,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'style.css' %}" type="text/css" />
-    {% block style %} {% endblock %}
+    {% block style %}{% endblock %}
   </head>
   <body>
     <h1>위캔두잇</h1>
-    {% block content %} {% endblock %}
+    <!-- 사용자 이름 표시 -->
+    {% if username %}
+    <!--만약 username 을 받았다면-->
+    <p>안녕! {{ username }} 우리 서버는 로그인 된 널 기억해</p>
+    <p>하지만 너가 로그아웃을 원한다면 ..</p>
+    <form action="logout/" method="post">
+      {% csrf_token %}
+      <input type="submit" value="logout" />
+    </form>
+    <!--username 에게 인사를 합시다-->
+    {% else %}
+    <!-- 만약 안받았다면 -->
+    <p>낯선 사람 반갑습니다. 원한다면 <a href="/signup/">회원가입</a> 할래 ?</p>
+    <!--낯선이에게 반갑다고 인사합시다-->
+    {% endif %} {% block content %}{% endblock %}
   </body>
 </html>

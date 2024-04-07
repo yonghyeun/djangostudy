@@ -4,6 +4,8 @@ from django.shortcuts import render , redirect
 from django.contrib.auth.models import User 
 from django.contrib import auth
 
+# 로그인 상태를 확인하기 위한 라이브러리 import  
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -36,8 +38,11 @@ def logout(request):
     return render(request,'signup.html')
 
 def home(request): # / 에 접속시 사용할 로직
-  return render(request,'base.html')
+    if request.user.is_authenticated:
+        # 로그인한 사용자의 이름을 템플릿에 전달
+        return render(request, 'base.html', {'username': request.user.username})
+    else:
+        # 로그인하지 않은 사용자의 경우 다른 처리를 할 수 있음
+        return render(request, 'base.html')
 
-
-# 기능이 작동하는지 확인해보자 
 

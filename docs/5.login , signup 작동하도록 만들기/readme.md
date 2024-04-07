@@ -215,5 +215,3 @@ from django.contrib import auth
 ![alt text](image-11.png)
 
 야호 ~~!~!~!!~
-
----
