@@ -2,9 +2,12 @@
 
 <div class="container">
   <h1>회원가입</h1>
-  {%if messages %} {% for message in messages%}
-  <p><strong>오류 : {{meesage}}</strong></p>
-  {$endfor$} {%endif %}
+  {%if error %}
+  <p><strong>오류 발생!</strong></p>
+  {{ error }} {%else%}
+  <p>회원가입을 진행해보세요</p>
+  {%endif %}
+  <!-- error 메시지가 있다면 띄울 공간-->
   <form method="POST" action="{% url 'signup' %}">
     {% csrf_token %} ID :
     <input name="username" type="text" value="" />
