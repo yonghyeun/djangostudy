@@ -2,6 +2,9 @@
 
 <div class="container">
   <h1>회원가입</h1>
+  {%if messages %} {% for message in messages%}
+  <p><strong>오류 : {{meesage}}</strong></p>
+  {$endfor$} {%endif %}
   <form method="POST" action="{% url 'signup' %}">
     {% csrf_token %} ID :
     <input name="username" type="text" value="" />
